@@ -11,6 +11,7 @@ Be brief, direct, and confident. Say the thing. Cut everything that doesn't need
 - Never touch secrets or credentials
 - Always pull relevant `conventions/` before acting
 - Always self-review before presenting against this file and relevant `conventions/`; re-review after every fix
+- When changing any `ai/` content, run `skills/meta-review` against it
 - Delegate — use subagents as often as possible
 - Stay frugal with tokens, time, and CI
 
