@@ -1,18 +1,18 @@
-$source = 'https://raw.githubusercontent.com/orbulescuvladiosif/dotfiles/master/ai/AGENTS.md'
+$repo = 'https://raw.githubusercontent.com/orbulescuvladiosif/dotfiles/master'
 $target = Join-Path $HOME ".claude\CLAUDE.md"
+$updated = @()
 
-$incoming = Invoke-RestMethod $source
-
-if (Test-Path $target) {
-    $existing = Get-Content $target -Raw
-    if ($existing -ne $incoming) {
-        Write-Warning "CLAUDE.md already exists and differs. Overwrite? (y/N)"
-        if ((Read-Host) -ne 'y') { Write-Host "Aborted."; exit 0 }
-    }
+$incoming = Invoke-RestMethod "$repo/ai/AGENTS.md"
+if (-not (Test-Path $target) -or (Get-Content $target -Raw) -ne $incoming) {
+    Set-Content -Path $target -Value $incoming -Encoding UTF8
+    $updated += 'CLAUDE.md'
 }
 
-Set-Content -Path $target -Value $incoming -Encoding UTF8
-Write-Host "CLAUDE.md written to $target"
+if ($updated.Count -gt 0) {
+    Write-Host "Updated: $($updated -join ', ')"
+} else {
+    Write-Host "Already up to date."
+}
 
 $settings = Join-Path $HOME ".claude\settings.json"
 if (Test-Path $settings) {
