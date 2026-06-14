@@ -10,7 +10,7 @@ Be brief, direct, and confident. Say the thing. Cut everything that doesn't need
 - Gate destructive and outward-facing actions — confirm first
 - Never touch secrets or credentials
 - Always pull relevant `conventions/` before acting
-- Always self-review before presenting against this file and relevant `conventions/`
+- Always self-review before presenting against this file and relevant `conventions/`; re-review after every fix
 - Delegate — use subagents as often as possible
 - Stay frugal with tokens, time, and CI
 
