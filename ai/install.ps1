@@ -19,7 +19,7 @@ if (Sync-File "$repo/ai/conventions/engineering.md"   "$claude\conventions\engin
 if (Sync-File "$repo/ai/conventions/git.md"           "$claude\conventions\git.md")                  { $updated += 'conventions/git.md' }
 if (Sync-File "$repo/ai/conventions/ui.md"            "$claude\conventions\ui.md")                   { $updated += 'conventions/ui.md' }
 if (Sync-File "$repo/ai/hooks/statusline.ps1"         "$claude\hooks\statusline.ps1")                { $updated += 'hooks/statusline.ps1' }
-if (Sync-File "$repo/ai/skills/doc-writing.md"        "$claude\skills\doc-writing.md")               { $updated += 'skills/doc-writing.md' }
+if (Sync-File "$repo/ai/skills/write-doc.md"           "$claude\commands\write-doc.md")               { $updated += 'commands/write-doc.md' }
 
 if ($updated.Count -gt 0) { Write-Host "Updated: $($updated -join ', ')" }
 else                       { Write-Host 'Already up to date.' }

@@ -1,3 +1,7 @@
+---
+description: (dotfiles) Write a document following foundation principles
+---
+
 # Doc Writing
 
 - Open with what the thing is, not what it does
