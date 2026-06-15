@@ -15,7 +15,8 @@ For each changed or added entry in this repo's AI setup (`ai/` or `.claude/`):
 - Check installer hygiene — any file added or removed from `ai/` must be in `install.ps1`; convention additions also update `conventions/index.md`; no rule references bare `conventions/` as a path
 - Check internal boundary — files in `.claude/` are never added to `install.ps1`
 - Check skill naming — verb-first kebab-case; installer mapping must be correct for the target AI system
-- Check skill descriptions — every skill must have a description prefixed with `(dotfiles)`; one line, no trailing period; format: `<verb phrase> — <scope>[; <gate>]`; gate phrases: `gated post`, `gated delete`, `gated write` (with qualifiers like `dry-run first` or `plan-first` when needed)
+- Check skill descriptions — every skill must have a description prefixed with `(dotfiles)`; one line, no trailing period; format: `<verb phrase> — <scope>[; <gate>]`
+- Gate phrases for descriptions: `gated post`, `gated delete`, `gated write` (with qualifiers like `dry-run first` or `plan-first` when needed)
 
 Check system voice — compare each changed file against 2-3 peers of the same type (e.g. skill vs skills); flag anything that feels out of place.
 

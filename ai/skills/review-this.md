@@ -4,9 +4,7 @@ description: (dotfiles) Review code — PR, local diff, or self-review; gated po
 
 # Review This
 
-One review engine, three modes — same persona, criteria, and format; only the target and output differ.
-
-Start with tooling analysis (per PROCESS): size the target, state the approach.
+Size the target; state the approach.
 
 ## Resolve target → mode
 
@@ -30,7 +28,7 @@ No-arg precedence: if code was written this session → **self**; otherwise → 
 ## Review criteria
 
 - Apply `AGENTS.md`, `conventions/index.md`, and relevant memory / past decisions; surface conflicts with established patterns
-- Apply general best practices for the language / framework / domain in play — what a strong reviewer in that stack would hold
+- Apply stack-appropriate best practices for the language / framework / domain in play
 - Correctness and consequence first; then design; then craft — skip pure style the formatter owns
 - **Verify every finding before raising it** — confirm against actual code (read surrounding context, trace the failure path); drop anything unsubstantiated
 
@@ -60,9 +58,8 @@ Flow: fetch PR (diff, files, existing reviews, CI) → analyze → **USER CHECK*
 
 - Report findings grouped by file; no disclaimer
 - Local: offer to apply fixes after user picks which to take
-- Self: fold the review into a silent revision before presenting (per AGENTS.md continuous self-review)
+- Self: fold the review into a silent revision before presenting
 
 ## Rules
 
-- Posting (PR mode) is an outward action — gated behind explicit approval
 - Verdict is approve or request-changes; comment-only when genuinely neither

@@ -4,8 +4,6 @@ description: (dotfiles) Consolidate memories — promote durable facts, clean st
 
 # Consolidate Memories
 
-Promotes durable facts to their right harness layer; cleans stale entries, dupes, and inconsistencies. **Plan-first: never write until the user approves.**
-
 Scope: if a project name is given, restrict to it; otherwise scan all.
 
 ## Sources
@@ -45,7 +43,7 @@ Read what's available; skip and note any source that's unavailable:
    |---|---|---|---|---|
    | … | … | promote / move / drop / flag | … | … |
 
-5. **STOP — present the table.** Get explicit approval before touching anything. Allow per-row veto.
+5. **USER CHECK** — present the table; get explicit approval before touching anything; allow per-row veto
 6. **Execute on approval:**
    - `ai/` promotions → output exact wording for the user to paste and commit
    - Native `memory/` writes → write directly; update the project's `MEMORY.md` index

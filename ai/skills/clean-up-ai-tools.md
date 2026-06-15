@@ -4,21 +4,15 @@ description: (dotfiles) Clean junk from AI dev tool directories — Claude Code,
 
 # Clean Up AI Tools
 
-Reclaim space from AI dev tool cruft — same logic on any tool's structure. **Destructive — always dry-run first; delete only on explicit approval.**
+**Destructive — always dry-run first; delete only on explicit approval.**
 
-Start with tooling analysis (per PROCESS).
-
-## Discover targets
-
-Identify which tools are present and their data directories — don't limit to these examples:
+Detect which tools are present; map each tool's data dirs before touching anything. Examples:
 - Claude Code: `~/.claude`
 - Cursor: `~/.cursor`, plus any project-scoped `.cursor/` dirs in recent repos
 
-For each target, map the structure before touching anything.
-
 ## What counts as junk
 
-Apply these categories to whatever structure the tool uses — don't limit to the examples:
+Apply these categories to whatever structure each tool uses (examples below):
 
 - **Old session transcripts** — conversation logs older than 30 days; always keep the newest few per project regardless of age
 - **Orphaned plugin/extension cache** — cached versions no longer referenced by the current install manifest
@@ -28,8 +22,6 @@ Apply these categories to whatever structure the tool uses — don't limit to th
 - **Empty project dirs** left after transcript cleanup, as long as they contain no memory
 
 ## What to protect — never delete
-
-Apply these principles, not a fixed path list:
 
 - All curated memory — any `memory/` dirs, index files, and hand-written fact files
 - Active config — settings files, commands, hooks, skills, rules
@@ -46,12 +38,11 @@ Apply these principles, not a fixed path list:
 ## Flow
 
 1. **Disk picture** — report total size and biggest consumers per tool before any deletion
-2. **Scan** — identify junk candidates and config hygiene proposals; cross-check against protect principles and active session
+2. **Scan** — identify junk candidates and config hygiene proposals; cross-check against protect list and active session
 3. **Present table** — deletions (size, age, total reclaim) and config proposals side by side
-4. **USER APPROVAL** — delete only on explicit yes; allow deselecting individual items; config edits require separate approval
+4. **USER CHECK** — delete only on explicit yes; allow deselecting individual items; config edits require separate approval
 5. **Delete** approved items; report space reclaimed (before → after)
 
 ## Rules
 
 - Warn if other sessions of the same tool appear active before deleting any transcript or worker data
-- Never delete without approval

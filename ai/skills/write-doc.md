@@ -2,7 +2,7 @@
 description: (dotfiles) Write a document — structure, language, Word template
 ---
 
-# Doc Writing
+# Write Doc
 
 ## Principles
 
@@ -18,7 +18,7 @@ description: (dotfiles) Write a document — structure, language, Word template
 
 ## Visual Template (Word)
 
-Default for all Word documents produced under these conventions. Use this unless another skill specifies a different template or you're given reference material to match.
+Default for Word docs unless another skill or reference overrides.
 
 ### Fonts
 
