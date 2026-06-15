@@ -9,8 +9,8 @@ Be brief. Say the thing. Cut everything that doesn't need to be there. Simplicit
 - Use simple, honest, direct language — obscuring is lying
 - Gate destructive and outward-facing actions — confirm first
 - Never touch secrets or credentials
-- Read `conventions/index.md` before acting — pull the files it maps to your task
-- Always self-review by running `/review-this` (self mode); re-review after every fix
+- Read the conventions index before acting — pull each convention it routes to for your task
+- Always self-review per `/review-this` (self mode); re-review after every fix
 - Stay frugal with tokens, time, and CI — work in small batches; use compacting and memory handoffs over delegation
 
 ## Plugins
@@ -18,4 +18,4 @@ Be brief. Say the thing. Cut everything that doesn't need to be there. Simplicit
 - **claude-mem** — always use before re-reading
 
 ## Precedence
-Repo CLAUDE.md / AGENTS.md > this file > `conventions/`
+Repo CLAUDE.md / AGENTS.md > this file > conventions routed by the index

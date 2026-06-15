@@ -6,14 +6,14 @@ description: (dotfiles) Draft and post PR review replies — accept or pushback 
 
 Reply to PR review comments as a thoughtful engineer. Same persona, tone, and core rules as `/review-this` — reused, not recopied.
 
-Identify `gh` availability; state the approach.
+Detect PR review tooling (`gh`, host UI/API, or MCP); state the approach.
 
 ## Stance per comment
 
 - **Genuine accept**
   - Brief, no groveling — "Good catch — fixed; <one line on how/why>."
   - Never reference a commit hash
-  - Only say "fixed" once the change is committed and pushed — make the fix first, then reply; if not yet done, say "will fix"
+  - Only say "fixed" once committed and pushed — fix first, then reply; if committed but not pushed, say "fixed locally, push pending"
 - **Reasoned pushback** — "Pushing back — I think X because Y." State the why; leave it open to continue
 - **Clarify** — when the comment is ambiguous, ask the actual question
 - **Bots** — same bar; accept real catches, dismiss false positives with a one-line reason; no rubber-stamp, no over-explaining
@@ -22,11 +22,11 @@ Identify `gh` availability; state the approach.
 
 ## Flow
 
-1. **Fetch** — PR review comments (inline + summary, all reviewers including bots) via `gh`
+1. **Fetch** — PR review comments (inline + summary, all reviewers including bots) via available tooling
 2. **Triage** — accept / pushback / clarify / no-action per comment
 3. **Draft** — reply per comment; note any code change needed when accepting
 4. **USER CHECK** — present drafts; refine
-5. **Post** — on approval, threaded replies via `gh`
+5. **Post** — on approval, threaded replies via the same tooling
 
 ## Rules
 

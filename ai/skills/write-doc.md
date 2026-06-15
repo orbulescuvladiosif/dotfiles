@@ -2,7 +2,7 @@
 description: (dotfiles) Write a document — structure, language, Word template
 ---
 
-# Write Doc
+# Write Document
 
 ## Principles
 
@@ -15,6 +15,13 @@ description: (dotfiles) Write a document — structure, language, Word template
 ## Language
 
 - **Abbreviations:** first use = full term followed by abbreviation in parentheses — e.g. "Product Vision Document (PVD)"; abbreviation alone from that point on
+
+## Flow
+
+1. **Gather** — read source material
+2. **Draft** — markdown by default; apply Principles and Language
+3. **USER CHECK** — present draft; revise until approved
+4. **Deliver** — markdown file, or Word per Visual Template when the user asks for `.docx`
 
 ## Visual Template (Word)
 

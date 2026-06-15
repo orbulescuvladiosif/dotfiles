@@ -2,7 +2,7 @@
 description: (dotfiles) Write a Product Vision Document (PVD) — shape, users, core mechanic, defining decisions
 ---
 
-# Write a PVD
+# Write PVD
 
 A PVD captures the shape of a product — what it is, how people use it, what makes it distinct.
 

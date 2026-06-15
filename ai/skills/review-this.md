@@ -4,7 +4,7 @@ description: (dotfiles) Review code — PR, local diff, or self-review; gated po
 
 # Review This
 
-Size the target; state the approach.
+Detect available review tooling (`gh`, host UI/API, MCP, or local git); size the target; state the approach.
 
 ## Resolve target → mode
 
@@ -27,7 +27,10 @@ No-arg precedence: if code was written this session → **self**; otherwise → 
 
 ## Review criteria
 
-- Apply `AGENTS.md`, `conventions/index.md`, and relevant memory / past decisions; surface conflicts with established patterns
+Lead with engineer judgment.
+
+- Apply `AGENTS.md`, the conventions index, and relevant memory / past decisions; surface conflicts with established patterns
+- Query claude-mem MCP (`search`, `get_observations`) for the project before reviewing
 - Apply stack-appropriate best practices for the language / framework / domain in play
 - Correctness and consequence first; then design; then craft — skip pure style the formatter owns
 - **Verify every finding before raising it** — confirm against actual code (read surrounding context, trace the failure path); drop anything unsubstantiated
@@ -52,7 +55,7 @@ Summary structure:
 3. Genuine assessment: what's right and why; then the single **weakest part** in bold, explained in depth
 4. Pointer to inline comments
 
-Flow: fetch PR (diff, files, existing reviews, CI) → analyze → **USER CHECK** (present full draft, refine) → post on approval (`gh`, inline + summary, verdict `APPROVE` / `REQUEST_CHANGES`).
+Flow: fetch PR (diff, files, existing reviews, CI) via available tooling → analyze → **USER CHECK** (present full draft, refine) → post on approval (inline + summary, verdict `APPROVE` / `REQUEST_CHANGES`). Surface failing CI in the summary; don't approve unless the user overrides.
 
 ## Local / self mode
 

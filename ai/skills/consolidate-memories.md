@@ -11,7 +11,7 @@ Scope: if a project name is given, restrict to it; otherwise scan all.
 Read what's available; skip and note any source that's unavailable:
 
 1. **CC native memory** — `~/.claude/projects/*/memory/*.md` and each project's `MEMORY.md` index
-2. **claude-mem** — query via MCP (`smart_search`, `get_observations`) filtered to high-signal types: `decision`, `discovery`, `refactor`, `change`; if the worker is down, skip and continue
+2. **claude-mem** — `search` (filter `decision`, `discovery`, `change`, `feature`, `bugfix`) then `get_observations` on promising IDs; use `timeline` when context matters; if the worker is down, skip and continue
 3. **Cursor memory** — Cursor has no queryable memory store (rules are config, not recall); skip
 
 ## Promotion targets
