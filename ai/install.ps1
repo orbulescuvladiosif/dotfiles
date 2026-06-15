@@ -3,13 +3,14 @@ $claude  = Join-Path $HOME '.claude'
 $updated = @()
 
 function Sync-File($src, $dest) {
-    $incoming = Invoke-RestMethod $src
-    if (-not (Test-Path $dest) -or (Get-Content $dest -Raw) -ne $incoming) {
-        New-Item -ItemType Directory -Force -Path (Split-Path $dest) | Out-Null
-        Set-Content -Path $dest -Value $incoming -Encoding UTF8
-        return $true
+    $incoming = ([string](Invoke-RestMethod $src)) -replace "`r`n", "`n"
+    if (Test-Path $dest) {
+        $existing = (Get-Content $dest -Raw -Encoding UTF8) -replace "`r`n", "`n"
+        if ($existing -eq $incoming) { return $false }
     }
-    return $false
+    New-Item -ItemType Directory -Force -Path (Split-Path $dest) | Out-Null
+    [System.IO.File]::WriteAllText($dest, $incoming, (New-Object System.Text.UTF8Encoding $false))
+    return $true
 }
 
 if (Sync-File "$repo/ai/AGENTS.md"                    "$claude\CLAUDE.md")                          { $updated += 'CLAUDE.md' }
