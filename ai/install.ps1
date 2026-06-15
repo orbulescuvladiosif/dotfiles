@@ -21,7 +21,13 @@ if (Sync-File "$repo/ai/conventions/engineering.md"   "$claude\conventions\engin
 if (Sync-File "$repo/ai/conventions/git.md"           "$claude\conventions\git.md")                  { $updated += 'conventions/git.md' }
 if (Sync-File "$repo/ai/conventions/ui.md"            "$claude\conventions\ui.md")                   { $updated += 'conventions/ui.md' }
 if (Sync-File "$repo/ai/hooks/statusline.ps1"         "$claude\hooks\statusline.ps1")                { $updated += 'hooks/statusline.ps1' }
+if (Sync-File "$repo/ai/skills/clean-up-ai-tools.md"   "$claude\commands\clean-up-ai-tools.md")       { $updated += 'commands/clean-up-ai-tools.md' }
+if (Sync-File "$repo/ai/skills/reply-review-comments.md" "$claude\commands\reply-review-comments.md") { $updated += 'commands/reply-review-comments.md' }
+if (Sync-File "$repo/ai/skills/review-this.md"         "$claude\commands\review-this.md")             { $updated += 'commands/review-this.md' }
+if (Sync-File "$repo/ai/skills/consolidate-memories.md" "$claude\commands\consolidate-memories.md")    { $updated += 'commands/consolidate-memories.md' }
 if (Sync-File "$repo/ai/skills/write-doc.md"           "$claude\commands\write-doc.md")               { $updated += 'commands/write-doc.md' }
+if (Sync-File "$repo/ai/skills/write-ticket.md"        "$claude\commands\write-ticket.md")            { $updated += 'commands/write-ticket.md' }
+if (Sync-File "$repo/ai/skills/write-pvd.md"           "$claude\commands\write-pvd.md")               { $updated += 'commands/write-pvd.md' }
 
 if ($updated.Count -gt 0) { Write-Host "Claude Code: $($updated -join ', ')" }
 else                       { Write-Host 'Claude Code: already up to date.' }

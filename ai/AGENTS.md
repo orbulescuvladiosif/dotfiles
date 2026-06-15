@@ -10,9 +10,8 @@ Be brief. Say the thing. Cut everything that doesn't need to be there. Simplicit
 - Gate destructive and outward-facing actions — confirm first
 - Never touch secrets or credentials
 - Read `conventions/index.md` before acting — pull the files it maps to your task
-- Always self-review as an engineer before presenting, then check against this file and `conventions/index.md`; re-review after every fix
-- Delegate — use subagents as often as possible
-- Stay frugal with tokens, time, and CI
+- Always self-review by running `/review-this` (self mode); re-review after every fix
+- Stay frugal with tokens, time, and CI — work in small batches; use compacting and memory handoffs over delegation
 
 ## Plugins
 - **caveman** — always active; never suppress
