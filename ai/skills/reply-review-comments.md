@@ -1,5 +1,5 @@
 ---
-description: (dotfiles) Draft and post replies to PR review comments — genuine accept or reasoned pushback, gated post
+description: (dotfiles) Draft and post PR review replies — accept or pushback with reasons; gated post
 ---
 
 # Reply Review Comments

@@ -1,5 +1,5 @@
 ---
-description: (dotfiles) Consolidate memories — promote durable facts to the right harness layer, clean up stale/dupes/inconsistencies. Plan-first, never auto-writes to repo files.
+description: (dotfiles) Consolidate memories — promote durable facts, clean stale/dupes; plan-first, gated write
 ---
 
 # Consolidate Memories

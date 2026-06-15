@@ -1,5 +1,5 @@
 ---
-description: (dotfiles) Draft and post an issue tracker ticket in PO/PM voice — problem, value, AC, scope. Gated post.
+description: (dotfiles) Draft and post a tracker ticket — PO/PM voice, problem, value, acceptance criteria, scope; gated post
 ---
 
 # Write Ticket

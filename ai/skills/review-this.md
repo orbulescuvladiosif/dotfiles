@@ -1,5 +1,5 @@
 ---
-description: (dotfiles) Review code as a warm, exacting colleague — PR (posts gated), local diff/branch, or self-review of freshly written code
+description: (dotfiles) Review code — PR, local diff, or self-review; gated post on PR
 ---
 
 # Review This

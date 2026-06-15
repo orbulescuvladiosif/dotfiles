@@ -1,5 +1,5 @@
 ---
-description: (dotfiles) Clean junk from AI dev tool data directories (Claude Code, Cursor) — dry-run first, approval before delete
+description: (dotfiles) Clean junk from AI dev tool directories — Claude Code, Cursor; dry-run first, gated delete
 ---
 
 # Clean Up AI Tools

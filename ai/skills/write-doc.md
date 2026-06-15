@@ -1,5 +1,5 @@
 ---
-description: (dotfiles) Write a document following foundation principles
+description: (dotfiles) Write a document — structure, language, Word template
 ---
 
 # Doc Writing
