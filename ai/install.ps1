@@ -2,6 +2,8 @@ $repo    = 'https://raw.githubusercontent.com/orbulescuvladiosif/dotfiles/master
 $claude  = Join-Path $HOME '.claude'
 $updated = @()
 
+$cursorDetected = Test-Path (Join-Path $HOME '.cursor')
+
 function Sync-File($src, $dest) {
     $incoming = ([string](Invoke-RestMethod $src)) -replace "`r`n", "`n"
     if (Test-Path $dest) {
@@ -21,8 +23,62 @@ if (Sync-File "$repo/ai/conventions/ui.md"            "$claude\conventions\ui.md
 if (Sync-File "$repo/ai/hooks/statusline.ps1"         "$claude\hooks\statusline.ps1")                { $updated += 'hooks/statusline.ps1' }
 if (Sync-File "$repo/ai/skills/write-doc.md"           "$claude\commands\write-doc.md")               { $updated += 'commands/write-doc.md' }
 
-if ($updated.Count -gt 0) { Write-Host "Updated: $($updated -join ', ')" }
-else                       { Write-Host 'Already up to date.' }
+if ($updated.Count -gt 0) { Write-Host "Claude Code: $($updated -join ', ')" }
+else                       { Write-Host 'Claude Code: already up to date.' }
+
+if ($cursorDetected) {
+    Write-Host ''
+    Write-Host 'Cursor detected. Rules are project-scoped -- enter a repo path to install, or Enter to skip:'
+    $cursorTarget = Read-Host '>'
+    if ($cursorTarget) {
+        if (-not (Test-Path (Join-Path $cursorTarget '.git'))) {
+            Write-Warning "$cursorTarget is not a git repo. Skipping Cursor install."
+        } else {
+            $cursorRules   = Join-Path $cursorTarget '.cursor\rules'
+            $cursorUpdated = @()
+            New-Item -ItemType Directory -Force -Path $cursorRules | Out-Null
+
+            $agentsContent = "---`nalwaysApply: true`n---`n" + (([string](Invoke-RestMethod "$repo/ai/AGENTS.md")) -replace "`r`n", "`n")
+            $agentsDest    = Join-Path $cursorRules 'agents.mdc'
+            $agentsExisting = if (Test-Path $agentsDest) { (Get-Content $agentsDest -Raw -Encoding UTF8) -replace "`r`n", "`n" } else { $null }
+            if ($agentsExisting -ne $agentsContent) {
+                [System.IO.File]::WriteAllText($agentsDest, $agentsContent, (New-Object System.Text.UTF8Encoding $false))
+                $cursorUpdated += 'agents.mdc'
+            }
+
+            $conventionsDir = Join-Path $cursorRules 'conventions'
+            New-Item -ItemType Directory -Force -Path $conventionsDir | Out-Null
+
+            $cursorConventions = [ordered]@{
+                'engineering.mdc' = @{ src = 'ai/conventions/engineering.md'; desc = 'Engineering conventions' }
+                'git.mdc'         = @{ src = 'ai/conventions/git.md';         desc = 'Git conventions' }
+                'ui.mdc'          = @{ src = 'ai/conventions/ui.md';           desc = 'UI conventions' }
+            }
+            foreach ($name in $cursorConventions.Keys) {
+                $entry   = $cursorConventions[$name]
+                $content = "---`ndescription: $($entry.desc)`nalwaysApply: false`n---`n" + (([string](Invoke-RestMethod "$repo/$($entry.src)")) -replace "`r`n", "`n")
+                $dest    = Join-Path $conventionsDir $name
+                $existing = if (Test-Path $dest) { (Get-Content $dest -Raw -Encoding UTF8) -replace "`r`n", "`n" } else { $null }
+                if ($existing -ne $content) {
+                    [System.IO.File]::WriteAllText($dest, $content, (New-Object System.Text.UTF8Encoding $false))
+                    $cursorUpdated += "conventions/$name"
+                }
+            }
+
+            $exclude     = Join-Path $cursorTarget '.git\info\exclude'
+            $excludeText = Get-Content $exclude -Raw -Encoding UTF8 -ErrorAction SilentlyContinue
+            $excludeEntries = @('.cursor/rules/agents.mdc', '.cursor/rules/conventions/')
+            $missing = $excludeEntries | Where-Object { $excludeText -notlike "*$_*" }
+            if ($missing) {
+                $addition = "`n# dotfiles personal rules`n" + ($missing -join "`n") + "`n"
+                [System.IO.File]::AppendAllText($exclude, $addition, (New-Object System.Text.UTF8Encoding $false))
+            }
+
+            if ($cursorUpdated.Count -gt 0) { Write-Host "Cursor: $($cursorUpdated -join ', ')" }
+            else                             { Write-Host 'Cursor: already up to date.' }
+        }
+    }
+}
 
 $settings = Join-Path $claude 'settings.json'
 if (Test-Path $settings) {
