@@ -5,11 +5,11 @@ on:
     branches: [master]
     paths:
       - 'ai/**'
-      - '.github/workflows/ai/tests.yml'
+      - '.github/workflows/ai-installer-tests.yml'
   pull_request:
     paths:
       - 'ai/**'
-      - '.github/workflows/ai/tests.yml'
+      - '.github/workflows/ai-installer-tests.yml'
 
 jobs:
   test:
