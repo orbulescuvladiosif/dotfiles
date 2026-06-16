@@ -10,4 +10,4 @@ iex (irm 'https://raw.githubusercontent.com/orbulescuvladiosif/dotfiles/master/a
 
 Requires [caveman](https://github.com/JuliusBrussee/caveman) and [claude-mem](https://github.com/thedotmack/claude-mem). Installer warns if either is missing.
 
-Claude Code: syncs to `~/.claude/`. Cursor: optional project-scoped rules and skills into a git repo you choose.
+Claude Code: syncs to `~/.claude/`. Cursor: skills to `~/.cursor/skills/` (global); optional project rules into a git repo you choose.

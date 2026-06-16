@@ -38,6 +38,7 @@ function Convert-ToCursorSkill($raw, $name) {
     return "---`nname: $name`ndescription: $desc`ndisable-model-invocation: true`n---`n$body"
 }
 
+# 1. Claude Code — ~/.claude/
 if (Sync-File "$repo/ai/AGENTS.md"                    "$claude\CLAUDE.md")                          { $updated += 'CLAUDE.md' }
 if (Sync-File "$repo/ai/conventions/index.md"         "$claude\conventions\index.md")                { $updated += 'conventions/index.md' }
 if (Sync-File "$repo/ai/conventions/engineering.md"   "$claude\conventions\engineering.md")          { $updated += 'conventions/engineering.md' }
@@ -51,13 +52,45 @@ foreach ($skill in $skillNames) {
 if ($updated.Count -gt 0) { Write-Host "Claude Code: $($updated -join ', ')" }
 else                       { Write-Host 'Claude Code: already up to date.' }
 
+$settings = Join-Path $claude 'settings.json'
+if (Test-Path $settings) {
+    $j = Get-Content $settings -Raw | ConvertFrom-Json
+    if (-not $j.enabledPlugins.'caveman@caveman')       { Write-Warning 'caveman not enabled — https://github.com/JuliusBrussee/caveman' }
+    if (-not $j.enabledPlugins.'claude-mem@thedotmack') { Write-Warning 'claude-mem not enabled — https://github.com/thedotmack/claude-mem' }
+    $statusCmd = "powershell -NoProfile -ExecutionPolicy Bypass -File `"$claude\hooks\statusline.ps1`""
+    if (-not $j.statusLine -or $j.statusLine.command -ne $statusCmd) {
+        $j | Add-Member -NotePropertyName 'statusLine' -NotePropertyValue ([PSCustomObject]@{ type = 'command'; command = $statusCmd }) -Force
+        [System.IO.File]::WriteAllText($settings, ($j | ConvertTo-Json -Depth 10), (New-Object System.Text.UTF8Encoding $false))
+        Write-Host "Claude Code: updated settings.json (statusLine)"
+    }
+} else {
+    Write-Host 'Claude Code: no settings.json — skipped plugin and statusLine checks.'
+}
+
+# 2. Cursor skills — ~/.cursor/skills/ (global, no prompt)
 if ($cursorDetected) {
+    $cursorSkills  = Join-Path $HOME '.cursor\skills'
+    $skillsUpdated = @()
+    foreach ($skill in $skillNames) {
+        $content = Convert-ToCursorSkill ([string](Invoke-RestMethod "$repo/ai/skills/$skill.md")) $skill
+        $dest    = Join-Path $cursorSkills "$skill\SKILL.md"
+        $existing = if (Test-Path $dest) { (Get-Content $dest -Raw -Encoding UTF8) -replace "`r`n", "`n" } else { $null }
+        if ($existing -ne $content) {
+            New-Item -ItemType Directory -Force -Path (Split-Path $dest) | Out-Null
+            [System.IO.File]::WriteAllText($dest, $content, (New-Object System.Text.UTF8Encoding $false))
+            $skillsUpdated += "skills/$skill/SKILL.md"
+        }
+    }
+    if ($skillsUpdated.Count -gt 0) { Write-Host "Cursor skills: $($skillsUpdated -join ', ')" }
+    else                             { Write-Host 'Cursor skills: already up to date.' }
+
+    # 3. Cursor rules — .cursor/rules/ in a git repo (prompt)
     Write-Host ''
-    Write-Host 'Cursor detected. Rules and skills are project-scoped -- enter a repo path to install, or Enter to skip:'
+    Write-Host 'Cursor rules are project-scoped -- enter a repo path to install, or Enter to skip:'
     $cursorTarget = Read-Host '>'
     if ($cursorTarget) {
         if (-not (Test-Path (Join-Path $cursorTarget '.git'))) {
-            Write-Warning "$cursorTarget is not a git repo. Skipping Cursor install."
+            Write-Warning "$cursorTarget is not a git repo. Skipping Cursor rules install."
         } else {
             $cursorRules   = Join-Path $cursorTarget '.cursor\rules'
             $cursorUpdated = @()
@@ -91,42 +124,19 @@ if ($cursorDetected) {
                 }
             }
 
-            $cursorSkills = Join-Path $cursorTarget '.cursor\skills'
-            foreach ($skill in $skillNames) {
-                $content = Convert-ToCursorSkill ([string](Invoke-RestMethod "$repo/ai/skills/$skill.md")) $skill
-                $dest    = Join-Path $cursorSkills "$skill\SKILL.md"
-                $existing = if (Test-Path $dest) { (Get-Content $dest -Raw -Encoding UTF8) -replace "`r`n", "`n" } else { $null }
-                if ($existing -ne $content) {
-                    New-Item -ItemType Directory -Force -Path (Split-Path $dest) | Out-Null
-                    [System.IO.File]::WriteAllText($dest, $content, (New-Object System.Text.UTF8Encoding $false))
-                    $cursorUpdated += "skills/$skill/SKILL.md"
-                }
-            }
-
             $exclude     = Join-Path $cursorTarget '.git\info\exclude'
             $excludeText = Get-Content $exclude -Raw -Encoding UTF8 -ErrorAction SilentlyContinue
-            $excludeEntries = @('.cursor/rules/agents.mdc', '.cursor/rules/conventions/', '.cursor/skills/')
+            $excludeEntries = @('.cursor/rules/agents.mdc', '.cursor/rules/conventions/')
             $missing = $excludeEntries | Where-Object { $excludeText -notlike "*$_*" }
             if ($missing) {
                 $addition = "`n# dotfiles personal Cursor config`n" + ($missing -join "`n") + "`n"
                 [System.IO.File]::AppendAllText($exclude, $addition, (New-Object System.Text.UTF8Encoding $false))
             }
 
-            if ($cursorUpdated.Count -gt 0) { Write-Host "Cursor: $($cursorUpdated -join ', ')" }
-            else                             { Write-Host 'Cursor: already up to date.' }
+            if ($cursorUpdated.Count -gt 0) { Write-Host "Cursor rules: $($cursorUpdated -join ', ')" }
+            else                             { Write-Host 'Cursor rules: already up to date.' }
         }
     }
-}
-
-$settings = Join-Path $claude 'settings.json'
-if (Test-Path $settings) {
-    $j = Get-Content $settings -Raw | ConvertFrom-Json
-    if (-not $j.enabledPlugins.'caveman@caveman')       { Write-Warning 'caveman not enabled — https://github.com/JuliusBrussee/caveman' }
-    if (-not $j.enabledPlugins.'claude-mem@thedotmack') { Write-Warning 'claude-mem not enabled — https://github.com/thedotmack/claude-mem' }
-    $statusCmd = "powershell -NoProfile -ExecutionPolicy Bypass -File `"$claude\hooks\statusline.ps1`""
-    if (-not $j.statusLine -or $j.statusLine.command -ne $statusCmd) {
-        $j | Add-Member -NotePropertyName 'statusLine' -NotePropertyValue ([PSCustomObject]@{ type = 'command'; command = $statusCmd }) -Force
-        [System.IO.File]::WriteAllText($settings, ($j | ConvertTo-Json -Depth 10), (New-Object System.Text.UTF8Encoding $false))
-        Write-Host "Updated: settings.json (statusLine)"
-    }
+} else {
+    Write-Host 'Cursor: not detected (~/.cursor missing) — skipping skills and rules.'
 }

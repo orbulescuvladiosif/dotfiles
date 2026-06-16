@@ -24,7 +24,7 @@ What the `ai/` harness must do. Structural first, behavioral second.
 ## Installer
 
 - `iex (irm '<raw-url>/ai/install.ps1')`
-- Syncs to `~/.claude/`; optional Cursor rules and skills into user-chosen git repo
+- Syncs to `~/.claude/`; Cursor skills to `~/.cursor/skills/`; optional Cursor rules into user-chosen git repo
 - Warns if caveman or claude-mem missing; idempotent; harness works without them
 - Every installable `ai/` path in `install.ps1`; skills in `$skillNames`; new conventions also update `conventions/index.md`
 
