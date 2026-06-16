@@ -34,6 +34,7 @@ function New-TestDir {
 }
 
 . (Join-Path $PSScriptRoot 'manifest.tests.ps1')
+. (Join-Path $PSScriptRoot 'harness-hygiene.tests.ps1')
 . (Join-Path $PSScriptRoot 'normalize-text.tests.ps1')
 . (Join-Path $PSScriptRoot 'convert-to-cursor-skill.tests.ps1')
 . (Join-Path $PSScriptRoot 'convert-to-cursor-mdc.tests.ps1')

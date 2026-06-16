@@ -1,0 +1,27 @@
+name: Installer Tests
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'ai/**'
+      - '.github/workflows/ai/tests.yml'
+  pull_request:
+    paths:
+      - 'ai/**'
+      - '.github/workflows/ai/tests.yml'
+
+jobs:
+  test:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run unit tests
+        shell: pwsh
+        run: ./ai/installer/tests/unit/run.ps1
+
+      - name: Run integration tests
+        shell: pwsh
+        run: ./ai/installer/tests/integration/run.ps1
