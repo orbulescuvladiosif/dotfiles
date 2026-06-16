@@ -1,8 +1,8 @@
 ---
-description: (dotfiles) Init docs-in-repo — vision, spec, decisions; gated
+description: (dotfiles) Init repo docs — vision, spec, decisions; gated
 ---
 
-# Init Docs
+# Init Repo Docs
 
 Set up or update a `docs/` folder that lives in the repo next to the code. The goal: anyone cloning the repo gets the product story, the current spec, and a record of important design choices — without hunting through chat history.
 

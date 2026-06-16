@@ -2,6 +2,19 @@ $repo    = 'https://raw.githubusercontent.com/orbulescuvladiosif/dotfiles/master
 $claude  = Join-Path $HOME '.claude'
 $updated = @()
 
+$skillNames = @(
+    'clean-up-ai-tools',
+    'reply-review-comments',
+    'review-this',
+    'consolidate-memories',
+    'write-doc',
+    'write-pvd',
+    'write-requirements',
+    'write-ticket',
+    'sdlc',
+    'init-repo-docs'
+)
+
 $cursorDetected = Test-Path (Join-Path $HOME '.cursor')
 
 function Sync-File($src, $dest) {
@@ -15,29 +28,29 @@ function Sync-File($src, $dest) {
     return $true
 }
 
+function Convert-ToCursorSkill($raw, $name) {
+    $raw = ([string]$raw) -replace "`r`n", "`n"
+    if ($raw -notmatch '(?s)^---\n(.+?)\n---\n(.*)$') { throw "Invalid skill format: $name" }
+    $desc = if ($matches[1] -match '(?m)^description:\s*(.+)$') { $matches[1].Trim() } else { '' }
+    return "---`nname: $name`ndescription: $desc`ndisable-model-invocation: true`n---`n$($matches[2])"
+}
+
 if (Sync-File "$repo/ai/AGENTS.md"                    "$claude\CLAUDE.md")                          { $updated += 'CLAUDE.md' }
 if (Sync-File "$repo/ai/conventions/index.md"         "$claude\conventions\index.md")                { $updated += 'conventions/index.md' }
 if (Sync-File "$repo/ai/conventions/engineering.md"   "$claude\conventions\engineering.md")          { $updated += 'conventions/engineering.md' }
 if (Sync-File "$repo/ai/conventions/git.md"           "$claude\conventions\git.md")                  { $updated += 'conventions/git.md' }
 if (Sync-File "$repo/ai/conventions/ui.md"            "$claude\conventions\ui.md")                   { $updated += 'conventions/ui.md' }
 if (Sync-File "$repo/ai/hooks/statusline.ps1"         "$claude\hooks\statusline.ps1")                { $updated += 'hooks/statusline.ps1' }
-if (Sync-File "$repo/ai/skills/clean-up-ai-tools.md"   "$claude\commands\clean-up-ai-tools.md")       { $updated += 'commands/clean-up-ai-tools.md' }
-if (Sync-File "$repo/ai/skills/reply-review-comments.md" "$claude\commands\reply-review-comments.md") { $updated += 'commands/reply-review-comments.md' }
-if (Sync-File "$repo/ai/skills/review-this.md"         "$claude\commands\review-this.md")             { $updated += 'commands/review-this.md' }
-if (Sync-File "$repo/ai/skills/consolidate-memories.md" "$claude\commands\consolidate-memories.md")    { $updated += 'commands/consolidate-memories.md' }
-if (Sync-File "$repo/ai/skills/write-doc.md"           "$claude\commands\write-doc.md")               { $updated += 'commands/write-doc.md' }
-if (Sync-File "$repo/ai/skills/write-pvd.md"           "$claude\commands\write-pvd.md")               { $updated += 'commands/write-pvd.md' }
-if (Sync-File "$repo/ai/skills/write-requirements.md" "$claude\commands\write-requirements.md")       { $updated += 'commands/write-requirements.md' }
-if (Sync-File "$repo/ai/skills/write-ticket.md"        "$claude\commands\write-ticket.md")            { $updated += 'commands/write-ticket.md' }
-if (Sync-File "$repo/ai/skills/sdlc.md"                "$claude\commands\sdlc.md")                    { $updated += 'commands/sdlc.md' }
-if (Sync-File "$repo/ai/skills/init-docs.md"          "$claude\commands\init-docs.md")               { $updated += 'commands/init-docs.md' }
+foreach ($skill in $skillNames) {
+    if (Sync-File "$repo/ai/skills/$skill.md" "$claude\commands\$skill.md") { $updated += "commands/$skill.md" }
+}
 
 if ($updated.Count -gt 0) { Write-Host "Claude Code: $($updated -join ', ')" }
 else                       { Write-Host 'Claude Code: already up to date.' }
 
 if ($cursorDetected) {
     Write-Host ''
-    Write-Host 'Cursor detected. Rules are project-scoped -- enter a repo path to install, or Enter to skip:'
+    Write-Host 'Cursor detected. Rules and skills are project-scoped -- enter a repo path to install, or Enter to skip:'
     $cursorTarget = Read-Host '>'
     if ($cursorTarget) {
         if (-not (Test-Path (Join-Path $cursorTarget '.git'))) {
@@ -75,12 +88,24 @@ if ($cursorDetected) {
                 }
             }
 
+            $cursorSkills = Join-Path $cursorTarget '.cursor\skills'
+            foreach ($skill in $skillNames) {
+                $content = Convert-ToCursorSkill ([string](Invoke-RestMethod "$repo/ai/skills/$skill.md")) $skill
+                $dest    = Join-Path $cursorSkills "$skill\SKILL.md"
+                $existing = if (Test-Path $dest) { (Get-Content $dest -Raw -Encoding UTF8) -replace "`r`n", "`n" } else { $null }
+                if ($existing -ne $content) {
+                    New-Item -ItemType Directory -Force -Path (Split-Path $dest) | Out-Null
+                    [System.IO.File]::WriteAllText($dest, $content, (New-Object System.Text.UTF8Encoding $false))
+                    $cursorUpdated += "skills/$skill/SKILL.md"
+                }
+            }
+
             $exclude     = Join-Path $cursorTarget '.git\info\exclude'
             $excludeText = Get-Content $exclude -Raw -Encoding UTF8 -ErrorAction SilentlyContinue
-            $excludeEntries = @('.cursor/rules/agents.mdc', '.cursor/rules/conventions/')
+            $excludeEntries = @('.cursor/rules/agents.mdc', '.cursor/rules/conventions/', '.cursor/skills/')
             $missing = $excludeEntries | Where-Object { $excludeText -notlike "*$_*" }
             if ($missing) {
-                $addition = "`n# dotfiles personal rules`n" + ($missing -join "`n") + "`n"
+                $addition = "`n# dotfiles personal Cursor config`n" + ($missing -join "`n") + "`n"
                 [System.IO.File]::AppendAllText($exclude, $addition, (New-Object System.Text.UTF8Encoding $false))
             }
 

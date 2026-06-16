@@ -13,9 +13,9 @@ For each changed or added entry in this repo's AI setup (`ai/` or `.claude/`):
 - Check actionability — concrete enough to act on
 - Check length — every line earns its place; cut without losing essence
 - Check list scope — any list meant to be illustrative must signal it before the list starts (use "e.g." or "such as" in the intro line); a closed list without a qualifier implies "only these"
-- Check installer hygiene — any file added or removed from `ai/` must be in `install.ps1`; convention additions also update `ai/conventions/index.md`
+- Check installer hygiene — any file added or removed from `ai/` must be in `install.ps1` (skills via `$skillNames`); convention additions also update `ai/conventions/index.md`
 - Check internal boundary — files in `.claude/` are never added to `install.ps1`
-- Check skill naming — verb-first kebab-case; installer mapping must be correct for the target AI system
+- Check skill naming — verb-first kebab-case; `$skillNames` in `install.ps1` must list every `ai/skills/*.md`; Claude maps to `commands/`, Cursor maps to `skills/<name>/SKILL.md` with `name`, `description`, `disable-model-invocation: true`
 - Check skill descriptions — every skill must have a description prefixed with `(dotfiles)`; one line, no trailing period; format: `<verb phrase> — <scope>[; <gate>]`; gate phrases: `gated post`, `gated delete`, `gated write` (with qualifiers like `dry-run first` or `plan-first` when needed)
 - Check conventions routing — `ai/conventions/index.md` lists logical names only; `ai/AGENTS.md` uses portable sibling `conventions/index` routing (it installs out); `ai/` skills route by index name only — repo-specific content belongs in `.claude/`
 - Check requirements alignment — when `docs/requirements.md` exists, verify changed `ai/` entries match the living spec; flag drift, stale inventories, or divergences that need a `docs/decisions/` record before requirements update
