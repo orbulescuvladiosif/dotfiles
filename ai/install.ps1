@@ -35,6 +35,40 @@ function Convert-ToCursorSkill($raw, $name) {
     return "---`nname: $name`ndescription: $desc`ndisable-model-invocation: true`n---`n$($matches[2])"
 }
 
+function Add-IgnoreEntries($file) {
+    $marker  = '# dotfiles personal Cursor config'
+    $entries = @('.cursor/rules/agents.mdc', '.cursor/rules/conventions/', '.cursor/skills/')
+    $utf8    = New-Object System.Text.UTF8Encoding $false
+    $text = Get-Content $file -Raw -Encoding UTF8 -ErrorAction SilentlyContinue
+    $missing = $entries | Where-Object { $text -notlike "*$_*" }
+    if (-not $missing) { return $false }
+    if (-not $text) {
+        $content = "$marker`n" + ($missing -join "`n") + "`n"
+        New-Item -ItemType Directory -Force -Path (Split-Path $file) -ErrorAction SilentlyContinue | Out-Null
+        [System.IO.File]::WriteAllText($file, $content, $utf8)
+        return $true
+    }
+    $addition = ''
+    if (-not $text.EndsWith("`n")) { $addition = "`n" }
+    if ($text -notlike "*$marker*") { $addition += "`n$marker`n" }
+    $addition += ($missing -join "`n") + "`n"
+    [System.IO.File]::AppendAllText($file, $addition, $utf8)
+    return $true
+}
+
+function Get-GlobalGitIgnorePath {
+    $configured = & git config --global core.excludesfile 2>$null
+    if ($configured) {
+        if (-not [System.IO.Path]::IsPathRooted($configured)) {
+            $configured = Join-Path $HOME $configured
+        }
+        return $configured
+    }
+    $xdg = [Environment]::GetEnvironmentVariable('XDG_CONFIG_HOME')
+    if ($xdg) { return Join-Path $xdg 'git\ignore' }
+    return Join-Path $HOME '.config\git\ignore'
+}
+
 if (Sync-File "$repo/ai/AGENTS.md"                    "$claude\CLAUDE.md")                          { $updated += 'CLAUDE.md' }
 if (Sync-File "$repo/ai/conventions/index.md"         "$claude\conventions\index.md")                { $updated += 'conventions/index.md' }
 if (Sync-File "$repo/ai/conventions/engineering.md"   "$claude\conventions\engineering.md")          { $updated += 'conventions/engineering.md' }
@@ -49,6 +83,11 @@ if ($updated.Count -gt 0) { Write-Host "Claude Code: $($updated -join ', ')" }
 else                       { Write-Host 'Claude Code: already up to date.' }
 
 if ($cursorDetected) {
+    $globalGitIgnore = Get-GlobalGitIgnorePath
+    if (Add-IgnoreEntries $globalGitIgnore) {
+        Write-Host "Global gitignore: updated $globalGitIgnore"
+    }
+
     Write-Host ''
     Write-Host 'Cursor detected. Rules and skills are project-scoped -- enter a repo path to install, or Enter to skip:'
     $cursorTarget = Read-Host '>'
@@ -100,14 +139,7 @@ if ($cursorDetected) {
                 }
             }
 
-            $exclude     = Join-Path $cursorTarget '.git\info\exclude'
-            $excludeText = Get-Content $exclude -Raw -Encoding UTF8 -ErrorAction SilentlyContinue
-            $excludeEntries = @('.cursor/rules/agents.mdc', '.cursor/rules/conventions/', '.cursor/skills/')
-            $missing = $excludeEntries | Where-Object { $excludeText -notlike "*$_*" }
-            if ($missing) {
-                $addition = "`n# dotfiles personal Cursor config`n" + ($missing -join "`n") + "`n"
-                [System.IO.File]::AppendAllText($exclude, $addition, (New-Object System.Text.UTF8Encoding $false))
-            }
+            Add-IgnoreEntries (Join-Path $cursorTarget '.git\info\exclude')
 
             if ($cursorUpdated.Count -gt 0) { Write-Host "Cursor: $($cursorUpdated -join ', ')" }
             else                             { Write-Host 'Cursor: already up to date.' }
