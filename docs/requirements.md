@@ -11,9 +11,10 @@ What the `ai/` harness must do. Structural first, behavioral second.
 
 - `AGENTS.md` — operating rules; first read on session start; routes `conventions/index`; mandates caveman, claude-mem, self-review via `review-this`
 - `conventions/` — one concern per file; index lists logical names only; skills route by index name
-- `skills/` — on-demand, single-concern workflows; gate checkpoints pull conventions; installed as Claude commands and Cursor skills per `install.ps1`; description format: `(dotfiles) <verb> — <scope>[; gate]`
+- `skills/` — on-demand, single-concern workflows; gate checkpoints pull conventions; installed as Claude commands and Cursor skills per `ai/installer/manifest.ps1`; description format: `(dotfiles) <verb> — <scope>[; gate]`
 - `hooks/` — Claude Code hooks
-- `install.ps1` — remote installer
+- `install.ps1` — remote installer entry; logic in `ai/installer/`
+- `installer/` — dev-only; `manifest.ps1`, `lib.ps1`, tests; never installed to `~/.claude/`
 
 ## Gates
 
@@ -26,7 +27,8 @@ What the `ai/` harness must do. Structural first, behavioral second.
 - `iex (irm '<raw-url>/ai/install.ps1')`
 - Syncs to `~/.claude/`; Cursor skills to `~/.cursor/skills/`; optional Cursor rules into user-chosen git repo
 - Warns if caveman or claude-mem missing; idempotent; harness works without them
-- Every installable `ai/` path in `install.ps1`; skills in `$skillNames`; new conventions also update `conventions/index.md`
+- Every installable `ai/` path in `ai/installer/manifest.ps1`; skills in `$SkillNames`; new conventions also update `ai/conventions/index.md`
+- `ai/installer/tests/unit/` and `integration/` — installer unit and integration tests
 
 ## Execution
 
