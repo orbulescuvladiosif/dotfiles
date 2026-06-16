@@ -29,6 +29,7 @@ if (Sync-File "$repo/ai/skills/write-doc.md"           "$claude\commands\write-d
 if (Sync-File "$repo/ai/skills/write-pvd.md"           "$claude\commands\write-pvd.md")               { $updated += 'commands/write-pvd.md' }
 if (Sync-File "$repo/ai/skills/write-requirements.md" "$claude\commands\write-requirements.md")       { $updated += 'commands/write-requirements.md' }
 if (Sync-File "$repo/ai/skills/write-ticket.md"        "$claude\commands\write-ticket.md")            { $updated += 'commands/write-ticket.md' }
+if (Sync-File "$repo/ai/skills/sdlc.md"                "$claude\commands\sdlc.md")                    { $updated += 'commands/sdlc.md' }
 
 if ($updated.Count -gt 0) { Write-Host "Claude Code: $($updated -join ', ')" }
 else                       { Write-Host 'Claude Code: already up to date.' }
