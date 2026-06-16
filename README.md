@@ -1,5 +1,7 @@
 # dotfiles
 
+[![AI Installer Tests](https://github.com/orbulescuvladiosif/dotfiles/actions/workflows/ai-installer-tests.yml/badge.svg)](https://github.com/orbulescuvladiosif/dotfiles/actions/workflows/ai-installer-tests.yml)
+
 Personal engineering config and tooling.
 
 ## Contents

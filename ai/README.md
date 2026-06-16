@@ -1,7 +1,5 @@
 # ai
 
-[![Installer Tests](https://github.com/orbulescuvladiosif/dotfiles/actions/workflows/ai-installer-tests.yml/badge.svg)](https://github.com/orbulescuvladiosif/dotfiles/actions/workflows/ai-installer-tests.yml)
-
 AI workflow harness for Claude Code and Cursor.
 
 ## Install
