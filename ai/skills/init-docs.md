@@ -1,59 +1,89 @@
 ---
-description: (dotfiles) Init docs folder — PVD, requirements, decisions; gated
+description: (dotfiles) Init docs-in-repo — vision, spec, decisions; gated
 ---
 
 # Init Docs
 
-Stand up or refresh `docs/` from source material. Living requirements reflect built state; decisions record material divergences only.
+Set up or update a `docs/` folder that lives in the repo next to the code. The goal: anyone cloning the repo gets the product story, the current spec, and a record of important design choices — without hunting through chat history.
 
-Entry: user supplies source PVD and/or requirements — paths, files, or pasted content. Gather any other docs they point at.
+Works in any repo. Dotfiles (`docs/pvd.md`, `docs/requirements.md`, `docs/decisions/`) is one example layout, not the only one.
+
+## How it works
+
+Three documents, three jobs — do not blend them:
+
+- **Vision doc** (`pvd.md` by default) — why the thing exists, principles, product shape. Changes rarely.
+- **Requirements doc** (`requirements.md` by default) — what the system actually does *right now*. Updated whenever the build changes.
+- **Decisions folder** (`decisions/` by default) — short files explaining meaningful choices that diverged from an earlier plan. Timestamp inside each file.
+
+Rules that apply in every repo:
+
+- Requirements describe reality, not wishes. Put rationale in the vision doc or a decision file.
+- Do not write "for rationale see pvd.md" — each file must stand on its own.
+- When requirements need to change because of a design choice: write the decision file first, then update requirements.
+- Do not put version numbers or "v1" labels in prose — git already versions the files.
+- Do not copy long inventories (skill lists, file trees) into READMEs and requirements — point at the one place that owns the list (`install.ps1`, `package.json`, etc.).
+- Write markdown in the repo. Export to PDF or Word only when asked (`/write-doc` if available).
+
+A vision doc is optional. A small library might only need requirements plus decisions.
+
+Confirm filenames and paths with the user before writing. Defaults above unless they override.
+
+## Entry
+
+User may provide:
+
+- An existing vision doc and/or requirements (files, paths, pasted text), or
+- Nothing — for a new repo where docs need to be created from what is already built
+
+Also gather any other reference docs the user points at.
+
+- **No prior docs** — write requirements from what is actually in the repo; ask whether a vision doc is needed
+- **Prior docs exist** — compare them to what was built; write decision files for important gaps, not every tiny diff
 
 ## 1. Scout
 
-- claude-mem (`search`, `get_observations`) — past work, decisions, what shipped to this phase
-- Source PVD and requirements
-- Repo as built — code, configs, READMEs, existing `docs/` if any
+- claude-mem (`search`, `get_observations`) if available — what was already decided, what shipped
+- Source vision and requirements from the user
+- The repo as it exists — code, config, READMEs, any current `docs/`
 
 ## 2. Brief
 
-Synthesize: built vs source, material divergences, open questions.
+Summarize: what was planned vs what was built, what diverged and matters, what is still unclear.
 
-**USER CHECK** — confirm before writing files.
+For a repo with no source docs: describe what exists and whether a vision doc is warranted.
 
-## 3. Build `docs/`
+**USER CHECK** — confirm before creating or overwriting files.
 
-| File | Role |
-|------|------|
-| `docs/README.md` | Folder index; change process (decision first, then requirements) |
-| `docs/pvd.md` | Product vision — rationale and principles |
-| `docs/requirements.md` | Living requirements — what exists now |
-| `docs/decisions/` | Material divergences — short name, timestamp inside, one concern each |
+## 3. Build
 
-Draft `pvd.md` and `requirements.md` per `/write-pvd` and `/write-requirements`. Markdown source — PDF or Word via `/write-doc` on request.
+Create or update:
 
-### Docs discipline
+- `docs/README.md` — what each file is for; how to change things (decision first, then requirements)
+- Vision doc — if applicable
+- Requirements doc — current spec of built state
+- Decision files — one concern per file, short name, date at top
 
-- Each doc stands alone — no cross-routing ("rationale in X", "see Y")
-- No version labels — git history holds snapshots
-- No duplicate inventories — point at source of truth (`install.ps1`, convention index, etc.)
-- Decisions via claude-mem + judgment — only what shaped the outcome; merge related calls into one file
+Use `/write-pvd` and `/write-requirements` when those skills exist. Follow the rules in **How it works** above.
 
 ## 4. README touch
 
-If needed: root README gets a Contents entry; collection README stays bootstrap-only — no doc inventories or cross-links.
+Only if needed:
 
-**USER CHECK** — user owns headlines and vision wording; don't override without ask.
+- Root README: add a link to `docs/` in a Contents list
+- Per-folder READMEs (e.g. `ai/README.md`): install/bootstrap info only — do not duplicate requirements or file inventories
+
+**USER CHECK** — the user owns headlines and vision wording. Do not override without asking.
 
 ## 5. Gate
 
-- Self-review per `/review-this` on doc and README changes
-- `/meta-review` on any `ai/` or `.claude/` changes
-- Update `requirements.md` when harness changed; decision file first if diverging from prior spec
-
-Fix, shrink, re-run until clean.
+- Run `/review-this` on all doc and README changes
+- If this repo has a living requirements doc and you changed code or harness config: check they still match; write a decision file first if they diverge
+- If this repo has an audit command for its AI setup (e.g. `/meta-review` in dotfiles): run it on harness changes
+- Fix problems and re-run until clean
 
 ## 6. Ship
 
-Present what changed and how to verify. **Do not commit or push without explicit user ask.**
+Tell the user what changed and how to check it. **Do not commit or push unless they explicitly ask.**
 
-Done when docs match built state, decisions capture material divergences, gates pass, user satisfied.
+Finished when requirements match what is built, important decisions are recorded, gates pass, and the user is satisfied.
