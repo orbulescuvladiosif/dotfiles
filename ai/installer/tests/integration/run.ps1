@@ -50,6 +50,9 @@ try {
 
     & $installPs1 @params
 
+    $installWithoutScriptRoot = [scriptblock]::Create([string](Get-Content $installPs1 -Raw -Encoding UTF8))
+    & $installWithoutScriptRoot @params
+
     Write-Host 'integration ok'
 } finally {
     $env:HOME = $savedHome

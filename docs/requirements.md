@@ -10,7 +10,7 @@ What the `ai/` harness must do. Structural first, behavioral second.
 ## Harness (`ai/`)
 
 - `AGENTS.md` — operating rules; first read on session start; routes `conventions/index`; mandates caveman, claude-mem, self-review via `review-this`
-- `conventions/` — one concern per file; index lists logical names only; skills route by index name
+- `conventions/` — one concern per file; `index.md` routes by name and holds ownership matrix + authoring rules; skills route by index name
 - `skills/` — on-demand, single-concern workflows; gate checkpoints pull conventions; installed as Claude commands and Cursor skills per `ai/installer/manifest.ps1`; description format: `(dotfiles) <verb> — <scope>[; gate]`
 - `hooks/` — Claude Code hooks
 - `install.ps1` — remote installer entry; logic in `ai/installer/`

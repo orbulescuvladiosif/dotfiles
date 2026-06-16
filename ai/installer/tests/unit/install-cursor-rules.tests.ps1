@@ -24,7 +24,8 @@ Test 'Install-CursorRules syncs rules and exclude' {
         }
         $fetcher = { param($url)
             $key = ($url -replace '^.*/(ai/.*)$', '$1')
-            return $contents[$key]
+            if ($contents.ContainsKey($key)) { return $contents[$key] }
+            return "# stub`n"
         }
         $r = Install-CursorRules 'https://host/repo' $repoDir $script:CursorConventions $script:ExcludeEntries $fetcher
         Assert $r.ok 'ok'

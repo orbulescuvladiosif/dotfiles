@@ -1,4 +1,6 @@
-. (Join-Path $PSScriptRoot 'manifest.ps1')
+if (-not (Get-Variable -Name SkillNames -Scope Script -ErrorAction SilentlyContinue)) {
+    . (Join-Path $PSScriptRoot 'manifest.ps1')
+}
 
 $script:Utf8NoBom = New-Object System.Text.UTF8Encoding $false
 

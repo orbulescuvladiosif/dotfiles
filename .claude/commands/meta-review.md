@@ -17,7 +17,8 @@ For each changed or added entry in this repo's AI setup (`ai/` or `.claude/`):
 - Check internal boundary — files in `.claude/` are never installed
 - Check skill naming — verb-first kebab-case; `$SkillNames` in `ai/installer/manifest.ps1` must list every `ai/skills/*.md`; Claude maps to `commands/`; Cursor maps to `~/.cursor/skills/<name>/SKILL.md` with `name`, `description`, `disable-model-invocation: true`
 - Check skill descriptions — every skill must have a description prefixed with `(dotfiles)`; one line, no trailing period; format: `<verb phrase> — <scope>[; <gate>]`; gate phrases: `gated post`, `gated delete`, `gated write` (with qualifiers like `dry-run first` or `plan-first` when needed)
-- Check conventions routing — `ai/conventions/index.md` lists logical names only; `ai/AGENTS.md` uses portable sibling `conventions/index` routing (it installs out); `ai/` skills route by index name only — repo-specific content belongs in `.claude/`
+- Check conventions routing — `ai/conventions/index.md` routes by logical name; ownership matrix and authoring rules live there; `ai/AGENTS.md` uses portable sibling `conventions/index` routing (it installs out); `ai/` skills route by index name only — repo-specific content belongs in `.claude/`
+- Check convention boundaries — each rule has one home per the index ownership matrix; no cross-file refs between convention files; generic vs domain split holds; sample vs rules split holds in domain files with reference material
 - Check requirements alignment — when `docs/requirements.md` exists, verify changed `ai/` entries match the living spec; flag drift, stale inventories, or divergences that need a `docs/decisions/` record before requirements update
 
 Check system voice — compare each changed file against 2-3 peers of the same type (e.g. skill vs skills); flag anything that feels out of place.

@@ -15,3 +15,7 @@ Claude Code: `~/.claude/`. Cursor: skills to `~/.cursor/skills/` (global); rules
 **2026-06-16** — Installer lib split + tests
 
 `ai/install.ps1` is entry only; `ai/installer/manifest.ps1` holds sync manifest (`$SkillNames`, paths); `ai/installer/lib.ps1` holds logic. `ai/installer/` is dev-only — unit and integration tests under `tests/`; never installed.
+
+**2026-06-16** — Remote in-memory bootstrap
+
+`iex (irm …)` leaves `$PSScriptRoot` empty — entry fetches `manifest.ps1` then `lib.ps1` via `irm` before `Invoke-DotfilesInstall`. Seed URL matches `manifest` `$script:DefaultRepo` until manifest loads; local disk path still dot-sources `installer/lib.ps1`.

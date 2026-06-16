@@ -10,6 +10,17 @@ Test 'Convention index matches convention files on disk' {
     Assert (-not $drift) "convention index drift: $drift"
 }
 
+Test 'Convention files have no cross-file references' {
+    $aiRoot = (Resolve-Path (Join-Path $PSScriptRoot '..\..\..')).Path
+    $pattern = '(?i)(`pull\s+[^`]+`|`see\s+[^`]+`|\sper\s+`[^`]+`|cover\s+\w+\s+in\s+E2E|domain conventions own)'
+    $hits = @()
+    foreach ($file in Get-ChildItem (Join-Path $aiRoot 'conventions\*.md') | Where-Object { $_.Name -ne 'index.md' }) {
+        $raw = Get-Content $file.FullName -Raw -Encoding UTF8
+        if ($raw -match $pattern) { $hits += $file.Name }
+    }
+    Assert (-not $hits) "cross-file refs in: $($hits -join ', ')"
+}
+
 Test 'Convention files are listed in install manifest' {
     $aiRoot = (Resolve-Path (Join-Path $PSScriptRoot '..\..\..')).Path
     $manifestConventions = @(

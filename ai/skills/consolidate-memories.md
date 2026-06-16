@@ -23,7 +23,7 @@ Source-repo destinations, not installed-harness routing — commit here, run ins
 | Target | What belongs there |
 |---|---|
 | `ai/AGENTS.md` | Cross-cutting operating rules — installer syncs to CLAUDE.md / agents.mdc |
-| `ai/conventions/<name>` | Routed by `ai/conventions/index` — pick engineering, git, or ui by task fit |
+| `ai/conventions/<name>` | Routed by `ai/conventions/index` — pick by task fit |
 | `ai/skills/` | Recurring workflow not yet a skill |
 | `ai/hooks/` | Session- or prompt-level automation |
 | Native project `memory/` | Project-specific facts |
