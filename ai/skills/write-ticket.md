@@ -8,15 +8,15 @@ Write as a PO/PM — not as a developer.
 
 Detect which tracker is available (Jira MCP, Linear MCP, GitHub Issues via `gh`, or other); identify the target project and issue type.
 
-## Voice (the core rule)
+## Voice
 
-- Write from the user/business value angle: problem, who it affects, why it matters, acceptance criteria, scope / out-of-scope
-- **No dev/implementation suggestions** unless the ticket is genuinely technical (infra, refactor, tech-debt) — then keep them minimal and clearly labelled
-- PO voice **takes precedence** over mimicking past tickets
+- User/business angle: problem, who, why, acceptance criteria, scope / out-of-scope
+- No dev suggestions unless genuinely technical (infra, refactor, tech-debt) — then minimal, labelled
+- PO voice over mimicking past tickets
 
 ## Flow
 
-1. **Gather** — read requirements or spec docs when present; search related tickets in the same scope (e.g. project, epic, labels) via the tracker's tools; read a few for house format, not voice
+1. **Gather** — requirements/spec when present; search related tickets for house format, not voice
 2. **Draft** — produce the ticket: summary, description (problem → value → acceptance criteria → scope), suggested type / labels / priority; surface any required fields by inspecting project metadata
 3. **USER CHECK** — present the draft; revise until approved; steps 4–6 run only after approval
 4. **Post** — create it in the right project and type via the tracker's tools

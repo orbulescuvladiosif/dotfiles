@@ -8,12 +8,6 @@ try { [Console]::OutputEncoding = [Text.Encoding]::UTF8 } catch {}
 try { [Console]::InputEncoding = [Text.Encoding]::UTF8 } catch {}
 
 $cOrange=172; $cGray=245; $cGold=178; $cTime=244; $cDim=240
-function Fmt-Num($n) {
-    $n = [double]$n
-    if ($n -ge 1000000) { return ('{0:0.0}M' -f ($n / 1000000)) }
-    if ($n -ge 1000)    { return ('{0:0}k'   -f ($n / 1000)) }
-    return ('{0:0}' -f $n)
-}
 
 $raw = [Console]::In.ReadToEnd()
 if ($raw) { $b = $raw.IndexOf('{'); if ($b -ge 0) { $raw = $raw.Substring($b) } }  # tolerate BOM/prefix
@@ -27,7 +21,7 @@ if (Test-Path $Flag) {
         if (-not ($item.Attributes -band [IO.FileAttributes]::ReparsePoint) -and $item.Length -le 64) {
             $mode = (((Get-Content -LiteralPath $Flag -TotalCount 1 -ErrorAction Stop) | Out-String).Trim()).ToLowerInvariant()
             $mode = ($mode -replace '[^a-z0-9-]', '')
-            $valid = @('lite','full','ultra','wenyan-lite','wenyan','wenyan-full','wenyan-ultra','commit','review','compress')
+            $valid = @('off','lite','full','ultra','wenyan-lite','wenyan','wenyan-full','wenyan-ultra','commit','review','compress')  # caveman VALID_MODES
             if ($valid -contains $mode) {
                 $cm = if ($mode -eq 'full') { '[CAVEMAN]' } else { '[CAVEMAN:' + $mode.ToUpperInvariant() + ']' }
             }

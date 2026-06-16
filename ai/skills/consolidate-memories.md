@@ -4,56 +4,57 @@ description: (dotfiles) Consolidate memories — promote durable facts, clean st
 
 # Consolidate Memories
 
-Scope: if a project name is given, restrict to it; otherwise scan all.
+Run on the machine you're consolidating from. Read what Claude Code and claude-mem stored here; promote durable facts into the dotfiles repo; user commits and runs the installer to sync every machine.
 
-## Sources
+Scope: project name given → restrict to it; else scan all.
 
-Read what's available; skip and note any source that's unavailable:
+## Sources — Claude Code and claude-mem on this machine
 
-1. **CC native memory** — `~/.claude/projects/*/memory/*.md` and each project's `MEMORY.md` index
-2. **claude-mem** — `search` (filter `decision`, `discovery`, `change`, `feature`, `bugfix`) then `get_observations` on promising IDs; use `timeline` when context matters; if the worker is down, skip and continue
-3. **Cursor memory** — Cursor has no queryable memory store (rules are config, not recall); skip
+Read what's available; skip and note unavailable:
 
-## Promotion targets
+1. **CC native memory** — `~/.claude/projects/*/memory/*.md`, project `MEMORY.md` indexes
+2. **claude-mem** — `search` (filter decision/discovery/change/feature/bugfix), `get_observations`, `timeline` when needed; skip if worker down
+3. **Cursor** — no queryable memory store; skip
+
+## Promotion targets — dotfiles repo
+
+Source-repo destinations, not installed-harness routing — commit here, run installer to sync.
 
 | Target | What belongs there |
 |---|---|
-| `ai/AGENTS.md` | Cross-cutting behavior rules |
-| `ai/conventions/` | Patterns, standards, style decisions reusable across projects |
-| `ai/skills/` | A recurring workflow not yet a skill |
+| `ai/AGENTS.md` | Cross-cutting operating rules — installer syncs to CLAUDE.md / agents.mdc |
+| `ai/conventions/<name>` | Routed by `ai/conventions/index` — pick engineering, git, or ui by task fit |
+| `ai/skills/` | Recurring workflow not yet a skill |
 | `ai/hooks/` | Session- or prompt-level automation |
 | Native project `memory/` | Project-specific facts |
 
-**Skill never writes to `ai/` directly** — those are repo files governed by the dotfiles workflow. Propose the wording; the user commits and runs the installer.
+Never write to `ai/` directly — propose wording; user commits and runs the installer.
 
 ## Algorithm
 
-1. **Gather** — read all available sources; note anything skipped
-2. **Classify each fact:**
-   - Harness-wide → map to the right `ai/` target above
-   - Project-specific → native project `memory/` (stays or moves there from claude-mem)
-   - Narrow / no lasting value → mark for drop
-3. **Cleanup pass — run alongside classification:**
-   - **Stale** — fact contradicts current code, config, or a more recent fact; mark for removal
-   - **Duplicate** — same fact in multiple sources, even in different wording; consolidate to one home
-   - **Inconsistent** — conflicting facts; flag both, don't silently pick one
-4. **Build the proposal table:**
+1. **Gather** — all available sources; note skips
+2. **Classify and clean each fact:**
+   - Cross-cutting → map to dotfiles target above
+   - Convention fact → read `ai/conventions/index`; pick name; target matching sibling file
+   - Project-specific → native `memory/`
+   - Narrow / stale / contradicts current state → drop
+   - Duplicate → one home
+   - Inconsistent → flag both; user resolves
+3. **Proposal table:**
 
    | Fact | Source | Action | Target | Proposed wording |
    |---|---|---|---|---|
    | … | … | promote / move / drop / flag | … | … |
 
-5. **USER CHECK** — present the table; get explicit approval before touching anything; allow per-row veto
-6. **Execute on approval:**
-   - `ai/` promotions → output exact wording for the user to paste and commit
-   - Native `memory/` writes → write directly; update the project's `MEMORY.md` index
-   - Drops → delete from source; update any index
-   - Inconsistencies → present both sides; resolve only after the user picks one
-7. **Report** — what moved, what was dropped, what was flagged, what was skipped
+4. **USER CHECK** — present table; per-row veto OK
+5. **Execute on approval:**
+   - `ai/` → exact wording for user to paste and commit
+   - Native `memory/` → write directly; update `MEMORY.md`
+   - Drops → delete from source; update indexes
+6. **Report** — moved, dropped, flagged, skipped
 
 ## Rules
 
-- One fact, one home — never leave a promoted fact duplicated across hand-curated layers
-- Never hand-edit claude-mem — it's the auto-firehose; curated copies live in their promoted home
-- Stale facts get dropped, not updated — if the fact needs rewriting it's a new fact
-- Flag inconsistencies without resolving them — the user decides, not the skill
+- One fact, one home — no duplicates across hand-curated layers
+- Never hand-edit claude-mem — promote copies to curated homes only
+- Stale → drop; rewrite = new fact. Inconsistent → flag, user decides

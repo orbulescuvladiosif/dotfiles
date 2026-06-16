@@ -8,13 +8,10 @@ description: (dotfiles) Write a document — structure, language, Word template
 
 - Open with what the thing is, not what it does
 - Lead with the conclusion — state it, then support it
-- Stay at the right altitude — cut anything that belongs in a different doc or a later phase
-- One idea per section — if a section needs two, split it
-- Use formatting only when structure demands it — hierarchy through weight, not decoration
-
-## Language
-
-- **Abbreviations:** first use = full term followed by abbreviation in parentheses — e.g. "Product Vision Document (PVD)"; abbreviation alone from that point on
+- Stay at right altitude — cut what belongs in another doc or later phase
+- One idea per section — split if a section needs two
+- Format only when structure demands it — hierarchy through weight, not decoration
+- Abbreviations: first use full term (ABBR) — e.g. Product Vision Document (PVD); ABBR alone after
 
 ## Flow
 

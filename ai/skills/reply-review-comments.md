@@ -10,15 +10,12 @@ Detect PR review tooling (`gh`, host UI/API, or MCP); state the approach.
 
 ## Stance per comment
 
-- **Genuine accept**
-  - Brief, no groveling — "Good catch — fixed; <one line on how/why>."
-  - Never reference a commit hash
-  - Only say "fixed" once committed and pushed — fix first, then reply; if committed but not pushed, say "fixed locally, push pending"
-- **Reasoned pushback** — "Pushing back — I think X because Y." State the why; leave it open to continue
-- **Clarify** — when the comment is ambiguous, ask the actual question
-- **Bots** — same bar; accept real catches, dismiss false positives with a one-line reason; no rubber-stamp, no over-explaining
-- **Verify before agreeing** — confirm the comment is correct against the code before accepting; a wrong comment gets pushback, not a reflexive "done"
-- Don't restate the comment or what the PR does; don't hedge
+- **Accept** — brief, no groveling: "Good catch — fixed; <how/why>." No commit hashes. "Fixed" only after commit+push; else "fixed locally, push pending"
+- **Pushback** — "Pushing back — X because Y." Leave room to continue
+- **Clarify** — ask the actual question when comment is ambiguous
+- **Bots** — same bar; one-line dismiss on false positives
+- **Verify first** — confirm against code; wrong comment gets pushback
+- Don't restate the comment, the PR, or hedge
 
 ## Flow
 
