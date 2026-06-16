@@ -19,7 +19,7 @@ What the `ai/` harness must do. Structural first, behavioral second.
 
 - Checkpoint in skill flow — pull conventions, validate prior output; human-in-the-loop counts
 - `sdlc` orchestrates phased gates for non-trivial work
-- `meta-review` (`.claude/commands/`) audits harness entities — conventions, installer hygiene, style
+- `meta-review` (`.claude/commands/`) audits harness entities — conventions, installer hygiene, style, requirements alignment
 
 ## Installer
 

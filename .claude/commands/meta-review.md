@@ -18,6 +18,7 @@ For each changed or added entry in this repo's AI setup (`ai/` or `.claude/`):
 - Check skill naming — verb-first kebab-case; installer mapping must be correct for the target AI system
 - Check skill descriptions — every skill must have a description prefixed with `(dotfiles)`; one line, no trailing period; format: `<verb phrase> — <scope>[; <gate>]`; gate phrases: `gated post`, `gated delete`, `gated write` (with qualifiers like `dry-run first` or `plan-first` when needed)
 - Check conventions routing — `ai/conventions/index.md` lists logical names only; `ai/AGENTS.md` uses portable sibling `conventions/index` routing (it installs out); `ai/` skills route by index name only — repo-specific content belongs in `.claude/`
+- Check requirements alignment — when `docs/requirements.md` exists, verify changed `ai/` entries match the living spec; flag drift, stale inventories, or divergences that need a `docs/decisions/` record before requirements update
 
 Check system voice — compare each changed file against 2-3 peers of the same type (e.g. skill vs skills); flag anything that feels out of place.
 
